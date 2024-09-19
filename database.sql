@@ -55,3 +55,24 @@ CREATE TABLE program_modules(
 	PRIMARY KEY(program_id, module_id)
 );
 
+-- Таблица пользователей
+CREATE TABLE users(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	teaching_group_id BIGINT REFERENCES teaching_groups(id) ON DELETE SET NULL,
+	username VARCHAR(255) NOT NULL,
+	email VARCHAR(255) UNIQUE NOT NULL,
+	password TEXT NOT NULL,
+	teaching_group_link TEXT NOT NULL,
+	role VARCHAR(255) NOT NULL CHECK (role IN ('student', 'teacher', 'admin')),
+	created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица учебной группы пользователя
+CREATE TABLE teaching_groups(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	slug VARCHAR(255) UNIQUE,
+	created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
