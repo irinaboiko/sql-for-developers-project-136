@@ -56,6 +56,8 @@ CREATE TABLE program_modules(
 );
 
 -- Таблица пользователей
+CREATE TYPE user_role AS ENUM('student', 'teacher', 'admin');
+
 CREATE TABLE users(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	teaching_group_id BIGINT REFERENCES teaching_groups(id) ON DELETE SET NULL,
@@ -63,7 +65,7 @@ CREATE TABLE users(
 	email VARCHAR(255) UNIQUE NOT NULL,
 	password TEXT NOT NULL,
 	teaching_group_link TEXT NOT NULL,
-	role VARCHAR(255) NOT NULL CHECK (role IN ('student', 'teacher', 'admin')),
+	role user_role NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
@@ -76,3 +78,54 @@ CREATE TABLE teaching_groups(
   updated_at TIMESTAMP NOT NULL
 );
 
+-- Таблица подписок
+CREATE TYPE enrollment_status AS ENUM('active', 'pending', 'cancelled', 'completed');
+
+CREATE TABLE enrollments(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+	status enrollment_status NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+
+
+-- Таблица для оплат
+CREATE TYPE payment_status AS ENUM('pending', 'paid', 'failed', 'refunded');
+
+CREATE TABLE payments(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	enrollment_id BIGINT REFERENCES enrollments(id) ON DELETE SET NULL,
+	amount NUMERIC NOT NULL,
+	status payment_status NOT NULL,
+	paid_at TIMESTAMP NOT NULL,
+	created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица отслеживания прогресса прохождения программы
+CREATE TYPE program_completion_status AS ENUM('active', 'completed', 'pending', 'cancelled');
+
+CREATE TABLE program_completions(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+	status program_completion_status NOT NULL,
+	start_date TIMESTAMP NOT NULL,
+	end_date TIMESTAMP,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица сертификатов
+CREATE TABLE certificates(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+  certificate_url TEXT NOT NULL,
+  issued_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
