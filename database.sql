@@ -2,41 +2,41 @@
 CREATE TABLE lessons(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	course_id BIGINT REFERENCES courses(id) NOT NULL,
-	lesson_name VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
-	video_link TEXT NOT NULL,
+	video_url TEXT NOT NULL,
 	position INTEGER NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
-	related_course_url TEXT,
-	is_deleted BOOLEAN DEFAULT FALSE
+	deleted_at TIMESTAMP NOT NULL
 );
 
 -- Таблица курсов
 CREATE TABLE courses(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
-	course_name VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
-	is_deleted BOOLEAN DEFAULT FALSE
+	deleted_at TIMESTAMP NOT NULL
 );
 
 -- Таблица модулей
 CREATE TABLE modules(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
-	module_name VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP NOT NULL
+	updated_at TIMESTAMP NOT NULL,
+	deleted_at TIMESTAMP NOT NULL
 );
 
 -- Таблица программ обучения
 CREATE TABLE programs(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
-	program_name VARCHAR(255) NOT NULL,
-	cost INTEGER NOT NULL,
-	type VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	price INTEGER NOT NULL,
+	program_type VARCHAR(255) NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
@@ -44,15 +44,13 @@ CREATE TABLE programs(
 -- Таблица для связи курсов и модулей (многие-ко-многим)
 CREATE TABLE course_modules(
 	course_id BIGINT REFERENCES courses(id) ON DELETE SET NULL,
-	module_id BIGINT REFERENCES modules(id) ON DELETE SET NULL,
-	PRIMARY KEY(course_id, module_id)
+	module_id BIGINT REFERENCES modules(id) ON DELETE SET NULL
 );
 
 -- Таблица для связи программ и модулей (многие-ко-многим)
 CREATE TABLE program_modules(
 	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
-	module_id BIGINT REFERENCES modules(id) ON DELETE SET NULL,
-	PRIMARY KEY(program_id, module_id)
+	module_id BIGINT REFERENCES modules(id) ON DELETE SET NULL
 );
 
 -- Таблица пользователей
@@ -61,13 +59,13 @@ CREATE TYPE user_role AS ENUM('student', 'teacher', 'admin');
 CREATE TABLE users(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	teaching_group_id BIGINT REFERENCES teaching_groups(id) ON DELETE SET NULL,
-	username VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
-	password TEXT NOT NULL,
-	teaching_group_link TEXT NOT NULL,
+	password_hash TEXT NOT NULL,
 	role user_role NOT NULL,
 	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL
+  updated_at TIMESTAMP NOT NULL,
+  deleted_at TIMESTAMP NOT NULL
 );
 
 -- Таблица учебной группы пользователя
@@ -111,8 +109,8 @@ CREATE TABLE program_completions(
 	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
 	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
 	status program_completion_status NOT NULL,
-	start_date TIMESTAMP NOT NULL,
-	end_date TIMESTAMP,
+	started_at TIMESTAMP NOT NULL,
+	completed_at TIMESTAMP,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
@@ -122,7 +120,7 @@ CREATE TABLE certificates(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
   program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
-  certificate_url TEXT NOT NULL,
+  url TEXT NOT NULL,
   issued_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
@@ -132,7 +130,7 @@ CREATE TABLE certificates(
 CREATE TABLE quizzes(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
-	quizze_name VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	content JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
@@ -142,7 +140,7 @@ CREATE TABLE quizzes(
 CREATE TABLE exercises(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
-	exercise_name VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	url TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
@@ -151,8 +149,9 @@ CREATE TABLE exercises(
 -- Таблица обсуждений
 CREATE TABLE discussions(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
+	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
 	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
-	content JSONB NOT NULL,
+	text JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
@@ -163,7 +162,7 @@ CREATE TYPE blog_status AS ENUM('created', 'in moderation', 'published', 'archiv
 CREATE TABLE blog(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
 	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-	title VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
 	content TEXT  NOT NULL,
 	status blog_status NOT NULL,
   created_at TIMESTAMP NOT NULL,
