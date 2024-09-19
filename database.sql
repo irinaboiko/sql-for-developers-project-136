@@ -143,7 +143,7 @@ CREATE TABLE discussions(
 
 CREATE type blog_status as ENUM('created', 'in moderation', 'published', 'archived');
 
-CREATE TABLE blog(
+CREATE TABLE blogs(
 	id BIGINT PRIMARY KEY NOT NULL,
 	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
 	name VARCHAR(255) NOT NULL,
