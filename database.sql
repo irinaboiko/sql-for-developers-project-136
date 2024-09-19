@@ -1,3 +1,5 @@
+CREATE DATABASE pg_tables;
+
 -- Таблица уроков
 CREATE TABLE lessons(
 	id BIGINT PRIMARY KEY UNIQUE NOT NULL,
