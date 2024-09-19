@@ -129,3 +129,23 @@ CREATE TABLE certificates(
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
+
+-- Таблица для тестов
+CREATE TABLE quizzes(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	name VARCHAR(255) NOT NULL,
+	content JSON NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица для практических заданий
+CREATE TABLE exercises(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	name VARCHAR(255) NOT NULL,
+	url TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
