@@ -135,7 +135,7 @@ CREATE TABLE quizzes(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
 	name VARCHAR(255) NOT NULL,
-	content JSON NOT NULL,
+	content JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
@@ -146,6 +146,28 @@ CREATE TABLE exercises(
 	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
 	name VARCHAR(255) NOT NULL,
 	url TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица обсуждений
+CREATE TABLE discussions(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	content JSONB NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
+-- Таблица блога
+CREATE TYPE blog_status AS ENUM('created', 'in moderation', 'published', 'archived');
+
+CREATE TABLE blog(
+	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+	title VARCHAR(255) NOT NULL,
+	content TEXT  NOT NULL,
+	status blog_status NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
