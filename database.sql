@@ -1,5 +1,3 @@
-CREATE DATABASE database IF NOT EXISTS;
-
 -- Таблица уроков
 CREATE TABLE lessons(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -92,8 +90,6 @@ CREATE TABLE enrollments(
   updated_at TIMESTAMP NOT NULL
 );
 
-
-
 -- Таблица для оплат
 CREATE TYPE payment_status AS ENUM('pending', 'paid', 'failed', 'refunded');
 
@@ -151,25 +147,25 @@ CREATE TABLE exercises(
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
 );
-
--- Таблица обсуждений
-CREATE TABLE discussions(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
-	content JSONB NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL
-);
-
--- Таблица блога
-CREATE TYPE blog_status AS ENUM('created', 'in moderation', 'published', 'archived');
-
-CREATE TABLE blog(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-	title VARCHAR(255) NOT NULL,
-	content TEXT  NOT NULL,
-	status blog_status NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP NOT NULL
-);
+--
+---- Таблица обсуждений
+--CREATE TABLE discussions(
+--	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+--	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+--	content JSONB NOT NULL,
+--  created_at TIMESTAMP NOT NULL,
+--  updated_at TIMESTAMP NOT NULL
+--);
+--
+---- Таблица блога
+--CREATE TYPE blog_status AS ENUM('created', 'in moderation', 'published', 'archived');
+--
+--CREATE TABLE blog(
+--	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+--	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+--	title VARCHAR(255) NOT NULL,
+--	content TEXT  NOT NULL,
+--	status blog_status NOT NULL,
+--  created_at TIMESTAMP NOT NULL,
+--  updated_at TIMESTAMP NOT NULL
+--);
