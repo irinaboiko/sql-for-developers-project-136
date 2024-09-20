@@ -26,7 +26,7 @@ CREATE TABLE lessons(
 );
 
 CREATE TABLE modules(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	id serial PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE modules(
 );
 
 CREATE TABLE programs(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	id serial PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	price INTEGER NOT NULL,
 	program_type VARCHAR(255) NOT NULL,
@@ -75,17 +75,17 @@ CREATE TABLE users(
 );
 
 CREATE TABLE enrollments(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id),
-	program_id BIGINT REFERENCES programs(id),
+	id serial PRIMARY KEY,
+	user_id integer REFERENCES users(id),
+	program_id integer REFERENCES programs(id),
 	status enrollment_status NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP
 );
 
 CREATE TABLE payments(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	enrollment_id BIGINT REFERENCES enrollments(id),
+	id serial PRIMARY KEY,
+	enrollment_id integer REFERENCES enrollments(id),
 	amount NUMERIC NOT NULL,
 	status payment_status NOT NULL,
 	paid_at TIMESTAMP,
@@ -94,9 +94,9 @@ CREATE TABLE payments(
 );
 
 CREATE TABLE program_completions(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id),
-	program_id BIGINT REFERENCES programs(id),
+	id serial PRIMARY KEY,
+	user_id integer REFERENCES users(id),
+	program_id integer REFERENCES programs(id),
 	status program_completion_status NOT NULL,
 	started_at TIMESTAMP NOT NULL,
 	completed_at TIMESTAMP,
@@ -105,9 +105,9 @@ CREATE TABLE program_completions(
 );
 
 CREATE TABLE certificates(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id),
-  program_id BIGINT REFERENCES programs(id),
+	id serial PRIMARY KEY,
+	user_id integer REFERENCES users(id),
+  program_id integer REFERENCES programs(id),
   url TEXT,
   issued_at TIMESTAMP,
   created_at TIMESTAMP NOT NULL,
@@ -115,8 +115,8 @@ CREATE TABLE certificates(
 );
 
 CREATE TABLE quizzes(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	lesson_id BIGINT REFERENCES lessons(id),
+	id serial PRIMARY KEY,
+	lesson_id integer REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	content JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -124,8 +124,8 @@ CREATE TABLE quizzes(
 );
 
 CREATE TABLE exercises(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	lesson_id BIGINT REFERENCES lessons(id),
+	id serial PRIMARY KEY,
+	lesson_id integer REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	url TEXT,
   created_at TIMESTAMP NOT NULL,
@@ -133,17 +133,17 @@ CREATE TABLE exercises(
 );
 
 CREATE TABLE discussions(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id),
-	lesson_id BIGINT REFERENCES lessons(id),
+	id serial PRIMARY KEY,
+	user_id integer REFERENCES users(id),
+	lesson_id integer REFERENCES lessons(id),
 	text JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP
 );
 
 CREATE TABLE blogs(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id),
+	id serial PRIMARY KEY,
+	user_id integer REFERENCES users(id),
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	status blog_status NOT NULL,
