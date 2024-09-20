@@ -45,12 +45,14 @@ CREATE TABLE programs(
 
 CREATE TABLE course_modules(
 	course_id BIGINT REFERENCES courses(id),
-	module_id BIGINT REFERENCES modules(id)
+	module_id BIGINT REFERENCES modules(id),
+	PRIMARY KEY (course_id, module_id)
 );
 
 CREATE TABLE program_modules(
 	program_id BIGINT REFERENCES programs(id),
-	module_id BIGINT REFERENCES modules(id)
+	module_id BIGINT REFERENCES modules(id),
+	PRIMARY KEY (program_id, module_id)
 );
 
 CREATE TABLE teaching_groups(
