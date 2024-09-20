@@ -10,19 +10,19 @@ CREATE TABLE courses(
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
-	deleted_at TIMESTAMP NOT NULL
+	deleted_at TIMESTAMP
 );
 
 CREATE TABLE lessons(
 	id serial PRIMARY KEY,
-	course_id integer REFERENCES courses(id) ON DELETE CASCADE,
+	course_id integer REFERENCES courses(id),
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	video_url TEXT NOT NULL,
 	position INTEGER NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
-	deleted_at TIMESTAMP NOT NULL
+	deleted_at TIMESTAMP
 );
 
 CREATE TABLE modules(
@@ -31,7 +31,7 @@ CREATE TABLE modules(
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
-	deleted_at TIMESTAMP NOT NULL
+	deleted_at TIMESTAMP
 );
 
 CREATE TABLE programs(
@@ -69,7 +69,7 @@ CREATE TABLE users(
 	role user_role NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL,
-  deleted_at TIMESTAMP NOT NULL
+  deleted_at TIMESTAMP
 );
 
 CREATE TABLE enrollments(
