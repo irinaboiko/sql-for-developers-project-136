@@ -56,15 +56,15 @@ CREATE TABLE program_modules(
 );
 
 CREATE TABLE teaching_groups(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	id serial PRIMARY KEY,
 	slug VARCHAR(255) UNIQUE,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP
 );
 
 CREATE TABLE users(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	teaching_group_id BIGINT REFERENCES teaching_groups(id),
+	id serial PRIMARY KEY,
+	teaching_group_id integer REFERENCES teaching_groups(id),
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
 	password_hash TEXT NOT NULL,
