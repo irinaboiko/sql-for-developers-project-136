@@ -5,7 +5,7 @@ CREATE type program_completion_status as ENUM('active', 'completed', 'pending', 
 CREATE type blog_status as ENUM('created', 'in moderation', 'published', 'archived');
 
 CREATE TABLE courses(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	id serial PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
 	created_at TIMESTAMP NOT NULL,
@@ -14,8 +14,8 @@ CREATE TABLE courses(
 );
 
 CREATE TABLE lessons(
-	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	course_id BIGINT REFERENCES courses(id),
+	id serial PRIMARY KEY,
+	course_id integer REFERENCES courses(id),
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	video_url TEXT NOT NULL,
