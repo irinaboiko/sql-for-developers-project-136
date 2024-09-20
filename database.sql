@@ -19,7 +19,7 @@ CREATE TABLE lessons(
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	video_url TEXT NOT NULL,
-	position INTEGER NOT NULL,
+	position INTEGER,
 	created_at TIMESTAMP NOT NULL,
 	updated_at TIMESTAMP NOT NULL,
 	deleted_at TIMESTAMP
