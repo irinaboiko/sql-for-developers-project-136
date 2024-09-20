@@ -8,8 +8,8 @@ CREATE TABLE courses(
 	id serial PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP,
+	created_at TIMESTAMP DEFAULT NOW(),
+	updated_at TIMESTAMP DEFAULT NOW(),
 	deleted_at TIMESTAMP
 );
 
@@ -20,8 +20,8 @@ CREATE TABLE lessons(
 	content TEXT NOT NULL,
 	video_url TEXT,
 	position INTEGER,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP,
+	created_at TIMESTAMP DEFAULT NOW(),
+	updated_at TIMESTAMP DEFAULT NOW(),
 	deleted_at TIMESTAMP
 );
 
@@ -29,8 +29,8 @@ CREATE TABLE modules(
 	id serial PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	description TEXT NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-	updated_at TIMESTAMP,
+	created_at TIMESTAMP DEFAULT NOW(),
+	updated_at TIMESTAMP DEFAULT NOW(),
 	deleted_at TIMESTAMP
 );
 
@@ -39,27 +39,27 @@ CREATE TABLE programs(
 	name VARCHAR(255) NOT NULL,
 	price INTEGER NOT NULL,
 	program_type VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE course_modules(
-	course_id BIGINT REFERENCES courses(id),
-	module_id BIGINT REFERENCES modules(id),
+	course_id integer REFERENCES courses(id),
+	module_id integer REFERENCES modules(id),
 	PRIMARY KEY (course_id, module_id)
 );
 
 CREATE TABLE program_modules(
-	program_id BIGINT REFERENCES programs(id),
-	module_id BIGINT REFERENCES modules(id),
+	program_id integer REFERENCES programs(id),
+	module_id integer REFERENCES modules(id),
 	PRIMARY KEY (program_id, module_id)
 );
 
 CREATE TABLE teaching_groups(
 	id serial PRIMARY KEY,
-	slug VARCHAR(255) UNIQUE,
-	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+	slug VARCHAR(255),
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE users(
@@ -69,8 +69,8 @@ CREATE TABLE users(
 	email VARCHAR(255) UNIQUE NOT NULL,
 	password_hash TEXT,
 	role user_role NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP,
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW(),
   deleted_at TIMESTAMP
 );
 
@@ -79,8 +79,8 @@ CREATE TABLE enrollments(
 	user_id integer REFERENCES users(id),
 	program_id integer REFERENCES programs(id),
 	status enrollment_status NOT NULL,
-	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE payments(
@@ -89,8 +89,8 @@ CREATE TABLE payments(
 	amount NUMERIC NOT NULL,
 	status payment_status NOT NULL,
 	paid_at TIMESTAMP,
-	created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+	created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE program_completions(
@@ -100,8 +100,8 @@ CREATE TABLE program_completions(
 	status program_completion_status NOT NULL,
 	started_at TIMESTAMP NOT NULL,
 	completed_at TIMESTAMP,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE certificates(
@@ -110,8 +110,8 @@ CREATE TABLE certificates(
   program_id integer REFERENCES programs(id),
   url TEXT,
   issued_at TIMESTAMP,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE quizzes(
@@ -119,8 +119,8 @@ CREATE TABLE quizzes(
 	lesson_id integer REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	content JSONB NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE exercises(
@@ -128,8 +128,8 @@ CREATE TABLE exercises(
 	lesson_id integer REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	url TEXT,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE discussions(
@@ -137,8 +137,8 @@ CREATE TABLE discussions(
 	user_id integer REFERENCES users(id),
 	lesson_id integer REFERENCES lessons(id),
 	text JSONB NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE blogs(
@@ -147,6 +147,6 @@ CREATE TABLE blogs(
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	status blog_status NOT NULL,
-  created_at TIMESTAMP NOT NULL,
-  updated_at TIMESTAMP
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 );
