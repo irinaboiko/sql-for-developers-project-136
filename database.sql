@@ -98,7 +98,7 @@ CREATE TABLE program_completions(
 	user_id integer REFERENCES users(id),
 	program_id integer REFERENCES programs(id),
 	status program_completion_status NOT NULL,
-	started_at TIMESTAMP NOT NULL,
+	started_at TIMESTAMP,
 	completed_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
