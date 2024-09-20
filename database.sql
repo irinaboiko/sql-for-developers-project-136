@@ -67,7 +67,7 @@ CREATE TABLE users(
 	teaching_group_id integer REFERENCES teaching_groups(id),
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
-	password_hash TEXT NOT NULL,
+	password_hash TEXT,
 	role user_role NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP,
