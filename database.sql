@@ -15,7 +15,7 @@ CREATE TABLE courses(
 
 CREATE TABLE lessons(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	course_id BIGINT REFERENCES courses(id) NOT NULL,
+	course_id BIGINT REFERENCES courses(id),
 	name VARCHAR(255) NOT NULL,
 	content TEXT NOT NULL,
 	video_url TEXT NOT NULL,
@@ -44,13 +44,13 @@ CREATE TABLE programs(
 );
 
 CREATE TABLE course_modules(
-	course_id BIGINT REFERENCES courses(id) ON delete SET NULL,
-	module_id BIGINT REFERENCES modules(id) ON delete SET NULL
+	course_id BIGINT REFERENCES courses(id),
+	module_id BIGINT REFERENCES modules(id)
 );
 
 CREATE TABLE program_modules(
-	program_id BIGINT REFERENCES programs(id) ON delete SET NULL,
-	module_id BIGINT REFERENCES modules(id) ON delete SET NULL
+	program_id BIGINT REFERENCES programs(id),
+	module_id BIGINT REFERENCES modules(id)
 );
 
 CREATE TABLE teaching_groups(
@@ -62,7 +62,7 @@ CREATE TABLE teaching_groups(
 
 CREATE TABLE users(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	teaching_group_id BIGINT REFERENCES teaching_groups(id) ON DELETE SET NULL,
+	teaching_group_id BIGINT REFERENCES teaching_groups(id),
 	name VARCHAR(255) NOT NULL,
 	email VARCHAR(255) UNIQUE NOT NULL,
 	password_hash TEXT NOT NULL,
@@ -74,8 +74,8 @@ CREATE TABLE users(
 
 CREATE TABLE enrollments(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+	user_id BIGINT REFERENCES users(id),
+	program_id BIGINT REFERENCES programs(id),
 	status enrollment_status NOT NULL,
 	created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
@@ -83,7 +83,7 @@ CREATE TABLE enrollments(
 
 CREATE TABLE payments(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	enrollment_id BIGINT REFERENCES enrollments(id) ON DELETE SET NULL,
+	enrollment_id BIGINT REFERENCES enrollments(id),
 	amount NUMERIC NOT NULL,
 	status payment_status NOT NULL,
 	paid_at TIMESTAMP NOT NULL,
@@ -93,8 +93,8 @@ CREATE TABLE payments(
 
 CREATE TABLE program_completions(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-	program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+	user_id BIGINT REFERENCES users(id),
+	program_id BIGINT REFERENCES programs(id),
 	status program_completion_status NOT NULL,
 	started_at TIMESTAMP NOT NULL,
 	completed_at TIMESTAMP,
@@ -104,8 +104,8 @@ CREATE TABLE program_completions(
 
 CREATE TABLE certificates(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-  program_id BIGINT REFERENCES programs(id) ON DELETE SET NULL,
+	user_id BIGINT REFERENCES users(id),
+  program_id BIGINT REFERENCES programs(id),
   url TEXT NOT NULL,
   issued_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE certificates(
 
 CREATE TABLE quizzes(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	lesson_id BIGINT REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	content JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -123,7 +123,7 @@ CREATE TABLE quizzes(
 
 CREATE TABLE exercises(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	lesson_id BIGINT REFERENCES lessons(id),
 	name VARCHAR(255) NOT NULL,
 	url TEXT NOT NULL,
   created_at TIMESTAMP NOT NULL,
@@ -132,8 +132,8 @@ CREATE TABLE exercises(
 
 CREATE TABLE discussions(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
-	lesson_id BIGINT REFERENCES lessons(id) ON DELETE SET NULL,
+	user_id BIGINT REFERENCES users(id),
+	lesson_id BIGINT REFERENCES lessons(id),
 	text JSONB NOT NULL,
   created_at TIMESTAMP NOT NULL,
   updated_at TIMESTAMP NOT NULL
@@ -141,7 +141,7 @@ CREATE TABLE discussions(
 
 CREATE TABLE blogs(
 	id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+	user_id BIGINT REFERENCES users(id),
 	name VARCHAR(255) NOT NULL,
 	content TEXT  NOT NULL,
 	status blog_status NOT NULL,
