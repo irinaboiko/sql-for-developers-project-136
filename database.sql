@@ -1,4 +1,4 @@
-CREATE type user_role as ENUM('student', 'teacher', 'admin');
+CREATE type user_role as ENUM('Student', 'Teacher', 'Admin');
 CREATE type enrollment_status as ENUM('active', 'pending', 'cancelled', 'completed');
 CREATE type payment_status as ENUM('pending', 'paid', 'failed', 'refunded');
 CREATE type program_completion_status as ENUM('active', 'completed', 'pending', 'cancelled');
